@@ -5,6 +5,9 @@ from skimage.metrics import structural_similarity, peak_signal_noise_ratio
 import torch
 import torch.nn.functional as F
 import torchvision.ops as vops
+import os
+import sys
+sys.path.append(os.path.abspath(os.path.join(os.path.dirname(__file__), '../..')))
 
 from slotformer.base_slots.models import to_rgb_from_tensor
 
