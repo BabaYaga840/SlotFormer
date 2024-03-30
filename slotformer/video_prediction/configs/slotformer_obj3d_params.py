@@ -5,7 +5,7 @@ class SlotFormerParams(BaseParams):
     project = 'SlotFormer'
 
     # training settings
-    gpus = 4  # 2 GPUs should also be good
+    gpus = 0  # 2 GPUs should also be good
     max_epochs = 200  # ~160k steps
     save_interval = 0.25  # save every 0.25 epoch
     eval_interval = 5  # evaluate every 5 epochs
@@ -21,12 +21,12 @@ class SlotFormerParams(BaseParams):
 
     # data settings
     dataset = 'obj3d_slots'
-    data_root = './data/OBJ3D'
-    slots_root = './data/OBJ3D/obj3d_slots.pkl'
+    data_root = '/Users/soumojitbhattacharya/Desktop/SlotFormer/data/OBJ3D'
+    slots_root = '/Users/soumojitbhattacharya/Desktop/SlotFormer/data/OBJ3D/obj3d_slots.pkl'
     n_sample_frames = 6 + 10  # 6 burn-in, 10 rollout
     frame_offset = 1  # no offset
     video_len = 50  # take the first 50 frames of each video
-    train_batch_size = 128 // gpus
+    train_batch_size = 128 // 4
     val_batch_size = train_batch_size * 2
     num_workers = 8
 

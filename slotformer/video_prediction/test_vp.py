@@ -19,8 +19,8 @@ from models import build_model
 from datasets import build_dataset
 
 import lpips
-
-loss_fn_vgg = lpips.LPIPS(net='vgg').cuda()
+device="cpu"
+loss_fn_vgg = lpips.LPIPS(net='vgg').to(device)
 
 
 def _save_video(videos, video_fn, dim=3):
@@ -115,8 +115,10 @@ def main(params):
     datamodule = BaseDataModule(
         params, train_set=val_set, val_set=val_set, use_ddp=False)
     val_loader = datamodule.val_loader
-
-    model = build_model(params).eval().cuda()
+    print("-------------------------------------------------------------------------")
+    print(val_set)
+    print("-------------------------------------------------------------------------")
+    model = build_model(params).eval().to(device)
     model.load_state_dict(
         torch.load(args.weight, map_location='cpu')['state_dict'])
 
@@ -134,10 +136,10 @@ def main(params):
     save_videos, save_mask_videos, save_bbox_videos = [], [], []
     video_num = 10 if args.save_num <= 0 else args.save_num
     only_vis = (args.save_num > 0)
-    mask_palette = PALETTE_torch.float().cuda()
+    mask_palette = PALETTE_torch.float().to(device)
 
     for data_dict in tqdm(val_loader):
-        data_dict = {k: v.cuda() for k, v in data_dict.items()}
+        data_dict = {k: v.to(device) for k, v in data_dict.items()}
         gt, gt_mask, gt_bbox, gt_pres_mask = get_input(params, data_dict)
         B = gt.shape[0]
 
@@ -194,7 +196,7 @@ def main(params):
                                     history_len)
             save_bbox_videos.append(bbox_video)
 
-        torch.cuda.empty_cache()
+        torch.to(device).empty_cache()
         # only do some visualizations
         if flag:
             break

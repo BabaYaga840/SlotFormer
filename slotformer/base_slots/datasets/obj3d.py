@@ -33,6 +33,9 @@ class Obj3DDataset(Dataset):
         self.n_sample_frames = n_sample_frames
         self.frame_offset = frame_offset
         self.video_len = video_len
+        print("-------------------------------------------------------------------------")
+    
+        print("-------------------------------------------------------------------------")
 
         # Get all numbers
         self.valid_idx = self._get_sample_idx()
